@@ -1,0 +1,35 @@
+server:
+  port: 8081
+
+spring:
+  # 数据源
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/major?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8
+    username: root
+    password: www.LCG.com
+  redis:
+    port: 6379
+    host: localhost
+  data:
+    neo4j:
+      username: neo4j
+      password: 123456
+      uri: bolt://localhost:7687
+  # 时间格式转换
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+  profiles:
+    # 引入application-email配置文件
+    include: email
+
+mybatis-plus:
+  # mapper文件映射路径
+  mapper-locations: classpath*:mapper/*.xml
+  configuration:
+    # 打印SQL语句
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+logging:
+  level:
+    com.shyroke.mapper: debug
