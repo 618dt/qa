@@ -1,8 +1,7 @@
 server:
   port: 8081
-
 spring:
-  # Êı¾İÔ´
+  # æ•°æ®æº
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/major?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8
@@ -16,19 +15,19 @@ spring:
       username: neo4j
       password: 123456
       uri: bolt://localhost:7687
-  # Ê±¼ä¸ñÊ½×ª»»
+  # æ—¶é—´æ ¼å¼è½¬æ¢
   jackson:
     time-zone: GMT+8
     date-format: yyyy-MM-dd HH:mm:ss
   profiles:
-    # ÒıÈëapplication-emailÅäÖÃÎÄ¼ş
+    # å¼•å…¥application-emailé…ç½®æ–‡ä»¶
     include: email
 
 mybatis-plus:
-  # mapperÎÄ¼şÓ³ÉäÂ·¾¶
-  mapper-locations: classpath*:mapper/*.xml
+  # mapperæ–‡ä»¶æ˜ å°„è·¯å¾„
+  mapper-locations: classpath:com/lcg/qa/mapper/xml/*.xml
   configuration:
-    # ´òÓ¡SQLÓï¾ä
+    # æ‰“å°SQLè¯­å¥
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 logging:
   level:

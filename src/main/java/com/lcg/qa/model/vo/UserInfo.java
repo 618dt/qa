@@ -6,10 +6,8 @@ import lombok.Data;
 
 @Data
 public class UserInfo {
-    @TableId(value = "id", type = IdType.AUTO)
-    private Integer id;
-
+    private Long id;
     private String name;
-
     private String email;
+    private String token;
 }

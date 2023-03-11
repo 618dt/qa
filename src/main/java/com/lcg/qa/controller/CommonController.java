@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/common")
-@CrossOrigin
+//@CrossOrigin
 public class CommonController {
 
     @Autowired

@@ -11,6 +11,7 @@ import com.lcg.qa.model.vo.LoginParam;
 import com.lcg.qa.model.vo.RegisterParam;
 import com.lcg.qa.model.vo.UserInfo;
 import com.lcg.qa.service.UserService;
+import com.lcg.qa.utils.JwtHelper;
 import com.lcg.qa.utils.StringUtil;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -18,6 +19,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 @Transactional
@@ -74,14 +78,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
         //返回前端的用户信息
         UserInfo userInfo = new UserInfo();
+        Map<String,String> userMap = new HashMap<>();
         if (user != null) {
             userInfo.setId(user.getId());
             userInfo.setEmail(user.getEmail());
             userInfo.setName(user.getName());
+            //使用JWT工具生成token
+            String token = JwtHelper.createToken(user.getId(), user.getName());
+            userInfo.setToken(token);
         }else {
             return Result.error(HttpStatusEnum.PASSWORD_ERROR);
         }
-
         return Result.data("userInfo",userInfo);
     }
 
