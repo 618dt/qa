@@ -13,7 +13,7 @@ public enum HttpStatusEnum {
     EMAIL_ALREADY_EXIST(4005, "邮箱已被注册"),
     PASSWORD_INCONSISTENT(4006, "密码不一致"),
     PARAM_ILLEGAL(4007, "参数不合法"),
-
+    INSERT_ERROR(5001,"提交异常"),
     INTERNAL_SERVER_ERROR(500, "服务器异常"),
     UNKNOWN_ERROR(66666, "未知异常, 联系管理员"),
     ILLEGAL_OPERATION(88888, "非法操作");

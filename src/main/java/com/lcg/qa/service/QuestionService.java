@@ -12,4 +12,13 @@ public interface QuestionService {
      * @return
      */
     Result findAnswer(String question);
+
+    /**
+     * 提交问题
+     * @param question
+     * @param userId
+     * @return
+     */
+    boolean submitQuestion(String question ,Long userId);
+
 }

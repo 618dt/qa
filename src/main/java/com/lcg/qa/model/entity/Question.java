@@ -1,9 +1,6 @@
 package com.lcg.qa.model.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
@@ -24,11 +21,11 @@ public class Question {
 
     private Long provider;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @TableField("create_time")
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @TableField(value = "create_time")
     private Date createTime;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @TableField("update_time")
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @TableField(value = "update_time")
     private Date updateTime;
 }

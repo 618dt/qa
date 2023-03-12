@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.Date;
 import java.util.Optional;
 
 @Slf4j
@@ -32,5 +33,27 @@ public class QuestionServiceImpl implements QuestionService {
             return Result.data("answer", res.getAnswer());
         }
         return Result.error();
+    }
+
+    @Override
+    public boolean submitQuestion(String question, Long userId) {
+        //插入用户
+        Question questionDo = new Question();
+        int num = 0;
+        if (!StringUtils.isEmpty(question) && !StringUtils.isEmpty(userId)) {
+            questionDo.setQuestion(question);
+            questionDo.setProvider(userId);
+            //刚提交,问题未回答
+            questionDo.setType(0);
+            //新增录入问题时,需要设置创建时间
+            questionDo.setCreateTime(new Date());
+            try {
+                num = questionMapper.insert(questionDo);
+                log.info("num = {}",num);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return num == 1;
     }
 }
