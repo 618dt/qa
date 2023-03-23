@@ -21,7 +21,6 @@ public class QuestionServiceImpl implements QuestionService {
     public Result findAnswer(String question) {
         //直接查询数据库
         Question res = Optional.ofNullable(questionMapper.findAnswer(question)).orElse(new Question());
-        log.info("查询返回结果{}",res);
         if (StringUtils.isEmpty(res.getQuestion())) {
             //问题为空，不存在该问题
             return Result.data("answer","no question");
@@ -29,7 +28,6 @@ public class QuestionServiceImpl implements QuestionService {
             //问题不为空，但答案为空
             return Result.data("answer","no answer");
         } else if (!StringUtils.isEmpty(res.getAnswer())&&res.getType()==1) {
-            log.info("answer:{}", res.getAnswer());
             return Result.data("answer", res.getAnswer());
         }
         return Result.error();
@@ -49,7 +47,6 @@ public class QuestionServiceImpl implements QuestionService {
             questionDo.setCreateTime(new Date());
             try {
                 num = questionMapper.insert(questionDo);
-                log.info("num = {}",num);
             } catch (Exception e) {
                 e.printStackTrace();
             }

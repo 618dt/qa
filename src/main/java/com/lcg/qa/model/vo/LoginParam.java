@@ -2,6 +2,9 @@ package com.lcg.qa.model.vo;
 
 import lombok.Getter;
 
+/**
+ * @author LCG
+ */
 @Getter
 public class LoginParam {
     // 邮箱

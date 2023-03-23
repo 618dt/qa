@@ -1,10 +1,12 @@
 package com.lcg.qa.utils;
 
 import io.jsonwebtoken.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
 
 import java.util.Date;
 
+@Slf4j
 public class JwtHelper {
 
     //过期时间
@@ -28,7 +30,6 @@ public class JwtHelper {
     //根据token字符串得到用户id
     public static Long getUserId(String token) {
         if(StringUtils.isEmpty(token)) return null;
-
         Jws<Claims> claimsJws = Jwts.parser().setSigningKey(tokenSignKey).parseClaimsJws(token);
         Claims claims = claimsJws.getBody();
         Integer userId = (Integer)claims.get("userId");

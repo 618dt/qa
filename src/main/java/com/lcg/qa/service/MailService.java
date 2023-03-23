@@ -48,7 +48,7 @@ public class MailService  {
         }
 
         // 注释掉发送邮件的代码
-        //javaMailSender.send(message);
+        javaMailSender.send(message);
     }
 
     /**
@@ -71,6 +71,6 @@ public class MailService  {
             helper.setCc(cc);
         }
         //注释掉真正发送邮件的代码
-        //javaMailSender.send(message);
+        javaMailSender.send(message);
     }
 }

@@ -28,6 +28,7 @@ public class TokenConfig implements WebMvcConfigurer {
         excludePath.add("/static/**");  //静态资源
         excludePath.add("/assets/**");  //静态资源
         //excludePath.add("/question/**");//测试
+        excludePath.add(("/admin/**"));
 
         registry.addInterceptor(new TokenInterceptor())
                 .addPathPatterns("/**")

@@ -7,7 +7,7 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * @author ASUS
+ * @author LCG
  */
 @Data
 @TableName("feedback")
@@ -24,13 +24,16 @@ public class Feedback {
     @TableField("user_id")
     Long userId;
 
+    @TableField("status")
+    Integer status;
+
     /**
      * 前端展示的日期格式
      * value:数据库对应的字段名
      * fill: 填充插入时间
      */
     @JsonFormat(pattern = "yyyy-MM-dd")
-    @TableField(value = "create_time",fill = FieldFill.INSERT)
+    @TableField(value = "create_time", fill = FieldFill.INSERT)
     private Date createTime;
 
 }
