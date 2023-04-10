@@ -1,5 +1,8 @@
 package com.lcg.qa.constant;
 
+/**
+ * @author LCG
+ */
 public interface RedisConstant {
 
     // Key

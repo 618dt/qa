@@ -14,6 +14,14 @@ public interface QuestionService {
     Result findAnswer(String question);
 
     /**
+     * 从知识图谱中获取答案，通过分词、模板匹配
+     * @param question
+     * @return
+     * @throws Exception
+     */
+    String getAnswerForNeo4j(String question) throws Exception;
+
+    /**
      * 提交问题
      * @param question
      * @param userId

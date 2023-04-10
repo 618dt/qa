@@ -32,3 +32,17 @@ mybatis-plus:
 logging:
   level:
     com.shyroke.mapper: debug
+
+#分词配置
+rootDirPath: F:/HanLP/data
+HanLP:
+  CustomDictionary:
+    cache:
+      path: ${rootDirPath}/dictionary/custom/CustomDictionary.txt.bin
+    path:
+      areaDict: ${rootDirPath}/dictionary/custom/areaDict.txt
+      companyDict: ${rootDirPath}/dictionary/custom/companyDict.txt
+      enterpriseDict: ${rootDirPath}/dictionary/custom/enterpriseDict.txt
+      industryDict: ${rootDirPath}/dictionary/custom/industryDict.txt
+      jobDict: ${rootDirPath}/dictionary/custom/jobDict.txt
+      techDict: ${rootDirPath}/dictionary/custom/techDict.txt
