@@ -100,6 +100,7 @@ public class CoreProcessor {
         for (Term term : terms) {
             String word = term.word;
             String termStr = term.toString();
+            //打印分词结果
             System.out.println(termStr);
             if (termStr.contains("na")) {
                 abstractQuery.append("na ");
@@ -110,7 +111,8 @@ public class CoreProcessor {
             }else if (termStr.contains("ne")) {
                 abstractQuery.append("ne ");
                 abstractMap.put("ne", word);
-            }else if (termStr.contains("ni")&&!abstractMap.containsKey("ni")) {
+            }else if (!termStr.contains("nis")&&termStr.contains("ni")) {
+                //nis是‘公司’这个词的词性,这里判断一下避免混淆
                 abstractQuery.append("ni ");
                 abstractMap.put("ni", word);
             } else if (termStr.contains("nj")) {

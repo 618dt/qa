@@ -1,11 +1,9 @@
 package com.lcg.qa.config;
 
 import com.alibaba.fastjson.JSON;
-import com.baomidou.mybatisplus.extension.api.R;
 import com.lcg.qa.model.result.Result;
 import com.lcg.qa.utils.JwtHelper;
 import lombok.extern.slf4j.Slf4j;
-import lombok.val;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;

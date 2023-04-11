@@ -29,11 +29,26 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public Result findAnswer(String question) {
-        //直接查询数据库
+
+        //首先直接查询数据库
         Question res = Optional.ofNullable(questionMapper.findAnswer(question)).orElse(new Question());
         if (StringUtils.isEmpty(res.getQuestion())) {
-            //问题为空，不存在该问题
-            return Result.data("answer","no question");
+            //问题为空，说明在数据库sys_qa表中没有录入该问题
+            //如果问题为空且不存在该问题。则对问句进行分词、模板匹配、从neo4j中查询
+            String ans=null;
+            try {
+                ans = getAnswerForNeo4j(question);
+            } catch (Exception e) {
+                log.error("知识图谱查询出错！");
+                e.printStackTrace();
+            }
+            //从知识图谱中如果查询出结果，就直接返回这个结果
+            if (!StringUtils.isEmpty(ans)) {
+                return Result.data("answer",ans);
+            }else {
+                //否则返回no question 示意前台录入该问题
+                return Result.data("answer","no question");
+            }
         } else if (StringUtils.isEmpty(res.getAnswer())&&res.getType()==0) {
             //问题不为空，但答案为空
             return Result.data("answer","no answer");
@@ -144,11 +159,11 @@ public class QuestionServiceImpl implements QuestionService {
             default:
                 break;
         }
-        System.out.println(answer);
+        //System.out.println(answer);
         if (answer != null && !"".equals(answer) && !("\\N").equals(answer)) {
             return answer;
         } else {
-            return "sorry,小主,我没有找到你要的答案";
+            return null;
         }
     }
 
