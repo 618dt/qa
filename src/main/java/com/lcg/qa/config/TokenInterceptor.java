@@ -39,7 +39,7 @@ public class TokenInterceptor implements HandlerInterceptor {
         try{
             Result r = Result.error();
             response.getWriter().append(JSON.toJSONString(r));
-            log.info("认证失败，未通过拦截器");
+            log.info("认证失败，用户未进行登录");
         }catch (Exception e){
             e.printStackTrace();
             response.sendError(500);

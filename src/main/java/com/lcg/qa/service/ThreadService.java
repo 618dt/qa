@@ -22,6 +22,6 @@ public class ThreadService {
     public void sendSimpleMail(String to, String theme, String content) {
         log.info("已发送邮件:主题: {},内容: {}",theme,content);
         //注释掉发送邮件的部分
-        //mailService.sendSimpleMail(to, theme, content);
+        mailService.sendSimpleMail(to, theme, content);
     }
 }

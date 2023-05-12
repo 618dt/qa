@@ -27,6 +27,7 @@ public class TokenConfig implements WebMvcConfigurer {
         excludePath.add("/user/**");  //用户相关的登录注册找回密码
         excludePath.add("/static/**");  //静态资源
         excludePath.add("/assets/**");  //静态资源
+        excludePath.add("/common/**"); //邮箱发送
         //excludePath.add("/question/**");//测试
         excludePath.add(("/admin/**"));
 

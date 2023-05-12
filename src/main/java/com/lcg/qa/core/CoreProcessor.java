@@ -16,12 +16,15 @@ import org.apache.spark.mllib.regression.LabeledPoint;
 import com.hankcs.hanlp.HanLP;
 import com.hankcs.hanlp.seg.Segment;
 import com.hankcs.hanlp.seg.common.Term;
+import org.apache.spark.sql.sources.In;
 
 
 /**
  * @author ASUS
  */
 public class CoreProcessor {
+
+    public StringBuilder trainText = new StringBuilder();
 
     /**指定问题question及字典的txt模板所在的根目录*/
     private String rootDirPath;
@@ -30,7 +33,7 @@ public class CoreProcessor {
     private NaiveBayesModel nbModel;
 
     /**分类标签号和问句模板对应表*/
-    private Map<Double, String> questionsPattern;
+    private Map<Integer, String> questionsPattern;
 
     /**词语和下标的对应表   == 词汇表*/
     private Map<String, Integer> vocabulary;
@@ -62,6 +65,7 @@ public class CoreProcessor {
         /**原始问句*/
         System.out.println("原始句子："+querySentence);
         System.out.println("========HanLP开始分词========");
+        trainText.append("========HanLP开始分词========").append("\n");
 
         /**抽象句子，利用HanPL分词，将关键字进行词性抽象*/
         String abstractStr = queryAbstract(querySentence);
@@ -102,6 +106,8 @@ public class CoreProcessor {
             String termStr = term.toString();
             //打印分词结果
             System.out.println(termStr);
+            //记录分词结果
+            trainText.append(termStr).append("\n");
             if (termStr.contains("na")) {
                 abstractQuery.append("na ");
                 abstractMap.put("na", word);
@@ -127,6 +133,7 @@ public class CoreProcessor {
             }
         }
         System.out.println("========HanLP分词结束========");
+        trainText.append("========HanLP分词结束========").append("\n");
         return abstractQuery.toString();
     }
 
@@ -358,8 +365,8 @@ public class CoreProcessor {
      * 加载问题模板 == 分类器标签
      * @return Map<Double, String> == 序号，问题分类
      */
-    public Map<Double,String> loadQuestionTemplates() {
-        Map<Double, String> questionsPattern = new HashMap<>(25);
+    public Map<Integer,String> loadQuestionTemplates() {
+        Map<Integer, String> questionsPattern = new HashMap<>(25);
         File file = new File(rootDirPath + "question/question_classification.txt");
         BufferedReader br = null;
         try {
@@ -371,7 +378,7 @@ public class CoreProcessor {
         try {
             while ((line = br.readLine()) != null) {
                 String[] tokens = line.split(":");
-                double index = Double.valueOf(tokens[0].replace("\uFEFF",""));
+                int index = Integer.valueOf(tokens[0].replace("\uFEFF",""));
                 String pattern = tokens[1];
                 questionsPattern.put(index, pattern);
             }
@@ -402,15 +409,32 @@ public class CoreProcessor {
         double index = nbModel.predict(v);
         modelIndex = (int)index;
         System.out.println("the model index is " + index);
+        String model = questionsPattern.get(modelIndex);
+        trainText.append("预测的问题模板为: ").append(index).append("--").append(model).append("\n");
+
         Vector vRes = nbModel.predictProbabilities(v);
         double[] probabilities = vRes.toArray();
         System.out.println("============ 问题模板分类概率 =============");
+        trainText.append("============ 问题模板分类概率 =============").append("\n");
+        //定义一个map,<模板序号,概率>
+        Map<Integer,Double> map = new HashMap<>();
         for (int i = 0; i < probabilities.length; i++) {
             System.out.println("问题模板分类【"+i+"】概率："+String.format("%.5f", probabilities[i]));
+            map.put(i,probabilities[i]);
         }
-        System.out.println("============ 问题模板分类概率 =============");
-        return questionsPattern.get(index);
 
+        //对map进行排序，按照value进行排序。
+        List<Map.Entry<Integer,Double>> list = new ArrayList<>(map.entrySet());
+        // 自定义Comparator实现数据对value值比较的逻辑，实现降序排列
+        list.sort((o1, o2) -> o2.getValue() > o1.getValue() ? 1 : -1);
+        //排序之后，遍历输出到文本中
+        list.forEach(m->{
+            String text = "序号"+m.getKey()+"-["+questionsPattern.get(m.getKey())+"]-概率：";
+            trainText.append(text).append(String.format("%.5f", m.getValue())).append("\n");
+        });
+        System.out.println("============ 问题模板分类概率 =============");
+        trainText.append("============ 问题模板分类概率 =============").append("\n");
+        return questionsPattern.get(modelIndex);
     }
 
 }

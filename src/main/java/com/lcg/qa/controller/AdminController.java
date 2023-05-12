@@ -2,6 +2,8 @@ package com.lcg.qa.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.lcg.qa.config.ConfigRunner;
+import com.lcg.qa.core.CoreProcessor;
 import com.lcg.qa.model.entity.Feedback;
 import com.lcg.qa.model.entity.Question;
 import com.lcg.qa.model.result.Result;
@@ -13,6 +15,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 
+import java.util.List;
 
 import static com.lcg.qa.constant.HttpStatusEnum.PARAM_ERROR;
 
@@ -133,5 +136,29 @@ public class AdminController {
             return Result.ok();
         }
         return Result.error();
+    }
+
+    /**
+     * 分词训练接口
+     */
+    @GetMapping("/train")
+    public Result trainParticiple(String question){
+        //将文本进行分词训练，然后展示分词结果。
+        ConfigRunner configRunner = new ConfigRunner();
+        configRunner.loadDict("F:/HanLP/data/dictionary/custom/areaDict.txt",0);
+        configRunner.loadDict("F:/HanLP/data/dictionary/custom/companyDict.txt",1);
+        configRunner.loadDict("F:/HanLP/data/dictionary/custom/enterpriseDict.txt",2);
+        configRunner.loadDict("F:/HanLP/data/dictionary/custom/industryDict.txt",3);
+        configRunner.loadDict("F:/HanLP/data/dictionary/custom/jobDict.txt",4);
+        configRunner.loadDict("F:/HanLP/data/dictionary/custom/techDict.txt",5);
+
+        CoreProcessor query = null;
+        try {
+            query = new CoreProcessor("F:/HanLP/data");
+            query.analysis(question);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Result.data("trainText", query.trainText.toString());
     }
 }
